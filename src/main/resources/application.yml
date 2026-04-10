@@ -7,10 +7,10 @@ spring:
     # OpenAI API 配置（使用 OpenAI 兼容接口）
     openai:
       api-key: ${OPENAI_API_KEY:your-api-key-here}
-      base-url: ${OPENAI_BASE_URL:https://api.openai.com/v1}
+      base-url: https://ark.cn-beijing.volces.com/api/coding
       chat:
         options:
-          model: ${OPENAI_MODEL:gpt-3.5-turbo}
+          model: glm-4.7
           temperature: 0.7
           top-p: 0.9
           max-tokens: 2000
