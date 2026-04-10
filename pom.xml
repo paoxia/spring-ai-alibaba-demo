@@ -16,12 +16,12 @@
     <artifactId>spring-ai-alibaba-demo</artifactId>
     <version>1.0.0</version>
     <name>Spring AI Alibaba Demo</name>
-    <description>Chat Agent Demo using Spring AI Alibaba</description>
+    <description>React Agent Demo using Spring AI Alibaba</description>
 
     <properties>
         <java.version>17</java.version>
         <spring-ai-alibaba.version>1.1.2.0</spring-ai-alibaba.version>
-        <spring-ai-alibaba-dashscope.version>1.1.2.1</spring-ai-alibaba-dashscope.version>
+        <spring-ai.version>1.0.0-M6</spring-ai.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -34,25 +34,25 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Spring AI Alibaba Studio -->
+        <!-- Spring AI Alibaba Studio (for Chat UI) -->
         <dependency>
             <groupId>com.alibaba.cloud.ai</groupId>
             <artifactId>spring-ai-alibaba-studio</artifactId>
             <version>${spring-ai-alibaba.version}</version>
         </dependency>
 
-        <!-- Spring AI Alibaba Agent Framework -->
+        <!-- Spring AI Alibaba Agent Framework (for ReactAgent) -->
         <dependency>
             <groupId>com.alibaba.cloud.ai</groupId>
             <artifactId>spring-ai-alibaba-agent-framework</artifactId>
             <version>${spring-ai-alibaba.version}</version>
         </dependency>
 
-        <!-- DashScope ChatModel (Alibaba's LLM) -->
+        <!-- Spring AI OpenAI Starter (for OpenAI-compatible API) -->
         <dependency>
-            <groupId>com.alibaba.cloud.ai</groupId>
-            <artifactId>spring-ai-alibaba-starter-dashscope</artifactId>
-            <version>${spring-ai-alibaba-dashscope.version}</version>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
+            <version>${spring-ai.version}</version>
         </dependency>
     </dependencies>
 
@@ -79,11 +79,6 @@
             <name>Aliyun Maven Repository</name>
             <url>https://maven.aliyun.com/repository/public</url>
         </repository>
-        <repository>
-            <id>spring-ai-alibaba</id>
-            <name>Spring AI Alibaba Repository</name>
-            <url>https://maven.aliyun.com/repository/central</url>
-        </repository>
     </repositories>
 
     <dependencyManagement>
@@ -91,7 +86,7 @@
             <dependency>
                 <groupId>org.springframework.ai</groupId>
                 <artifactId>spring-ai-bom</artifactId>
-                <version>1.0.0-M6</version>
+                <version>${spring-ai.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
