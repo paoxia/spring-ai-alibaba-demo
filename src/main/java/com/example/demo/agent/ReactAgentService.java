@@ -5,6 +5,7 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 /**
  * React Agent 服务配置
@@ -18,6 +19,7 @@ public class ReactAgentService {
      * 使用 @Qualifier 指定使用 openAiChatModel 而不是 dashScopeChatModel
      */
     @Bean
+    @Primary
     public ReactAgent reactAgent(@Qualifier("openAiChatModel") ChatModel chatModel) {
         return ReactAgent.builder()
                 .name("react_agent")

@@ -28,27 +28,29 @@
     </properties>
 
     <dependencies>
-        <!-- Spring Boot Web Starter -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Spring AI Alibaba Studio (for Chat UI) -->
         <dependency>
             <groupId>com.alibaba.cloud.ai</groupId>
             <artifactId>spring-ai-alibaba-studio</artifactId>
             <version>${spring-ai-alibaba.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.alibaba.cloud.ai</groupId>
+                    <artifactId>spring-ai-alibaba-starter-dashscope</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
-        <!-- Spring AI Alibaba Agent Framework (for ReactAgent) -->
         <dependency>
             <groupId>com.alibaba.cloud.ai</groupId>
             <artifactId>spring-ai-alibaba-agent-framework</artifactId>
             <version>${spring-ai-alibaba.version}</version>
         </dependency>
 
-        <!-- Spring AI OpenAI Starter (for OpenAI-compatible API) -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
