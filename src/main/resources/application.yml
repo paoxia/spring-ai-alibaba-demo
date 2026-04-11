@@ -4,7 +4,7 @@ spring:
   ai:
     # OpenAI API 配置（使用 OpenAI 兼容接口）
     openai:
-      api-key: ${OPENAI_API_KEY:your-api-key-here}
+      api-key: ${OPENAI_MODE_API_KEY:your-api-key-here}
       base-url: https://ark.cn-beijing.volces.com/api/coding
       chat:
         options:
