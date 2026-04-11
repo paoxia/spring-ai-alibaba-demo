@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/agent")
-@CrossOrigin(origins = "*")
 public class ReactAgentController {
 
     private final ReactAgent reactAgent;
