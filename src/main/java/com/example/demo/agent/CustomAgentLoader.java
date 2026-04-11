@@ -15,17 +15,19 @@ import java.util.List;
 @Component
 public class CustomAgentLoader implements AgentLoader {
 
+    private static final String RESEARCH_AGENT = "research_agent";
+
     @Autowired
     private ReactAgent reactAgent;
 
     @Override
     public List<String> listAgents() {
-        return List.of("react_agent", "research_agent");
+        return List.of(RESEARCH_AGENT);
     }
 
     @Override
     public Agent loadAgent(String name) {
-        if ("react_agent".equals(name) || "research_agent".equals(name)) {
+        if (RESEARCH_AGENT.equals(name)) {
             return reactAgent;
         }
         throw new IllegalArgumentException("Agent not found: " + name);
