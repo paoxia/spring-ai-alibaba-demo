@@ -13,11 +13,8 @@ spring:
           top-p: 0.9
           max-tokens: 2000
 
-server:
-  port: 8081
-
 logging:
   level:
     root: INFO
-    com.alibaba.cloud.ai: DEBUG
-    org.springframework.ai: DEBUG
+    com.alibaba.cloud.ai: WARN
+    org.springframework.ai: WARN

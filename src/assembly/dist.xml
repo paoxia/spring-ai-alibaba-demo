@@ -1,0 +1,44 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
+    <id>dist</id>
+    <formats>
+        <format>zip</format>
+        <format>tar.gz</format>
+    </formats>
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <baseDirectory>spring-ai-alibaba-demo-${project.version}</baseDirectory>
+
+    <files>
+        <!-- 复制并重命名 JAR 文件 -->
+        <file>
+            <source>${project.build.directory}/spring-ai-alibaba-demo-${project.version}.jar</source>
+            <outputDirectory>.</outputDirectory>
+            <destName>spring-ai-alibaba-demo-1.0.0.jar</destName>
+        </file>
+    </files>
+
+    <fileSets>
+        <!-- 复制启动脚本 -->
+        <fileSet>
+            <directory>${project.basedir}/bin</directory>
+            <outputDirectory>bin</outputDirectory>
+            <includes>
+                <include>ai-chat</include>
+                <include>ai-chat.bat</include>
+            </includes>
+            <fileMode>0755</fileMode>
+        </fileSet>
+
+        <!-- 复制文档 -->
+        <fileSet>
+            <directory>${project.basedir}</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>README*</include>
+                <include>INSTALL*</include>
+                <include>LICENSE*</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>
