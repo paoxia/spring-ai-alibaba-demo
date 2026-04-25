@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.alibaba.cloud.ai.graph.agent.ReactAgent;
 import com.alibaba.cloud.ai.graph.exception.GraphRunnerException;
 import org.springframework.ai.chat.messages.AssistantMessage;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * 除了 Studio UI 之外，也可以通过此 API 进行集成
  */
 @RestController
-@RequestMapping("/api/agent")
+@RequestMapping("/api")
 public class ReactAgentController {
 
     /**
@@ -20,12 +21,21 @@ public class ReactAgentController {
     private final ReactAgent reactAgent;
 
     /**
-     * 构造函数注入 ReactAgent
+     * 注入的 SQL 助手 Agent，支持技能（Skills）功能
+     */
+    private final ReactAgent sqlAssistantAgent;
+
+    /**
+     * 构造函数注入 ReactAgent 和 SQL 助手 Agent
      *
      * @param reactAgent 要使用的 ReactAgent 实例
+     * @param sqlAssistantAgent 要使用的 SQL 助手 Agent 实例
      */
-    public ReactAgentController(ReactAgent reactAgent) {
+    public ReactAgentController(
+            ReactAgent reactAgent,
+            @Qualifier("sqlAssistantAgent") ReactAgent sqlAssistantAgent) {
         this.reactAgent = reactAgent;
+        this.sqlAssistantAgent = sqlAssistantAgent;
     }
 
     /**
@@ -36,16 +46,37 @@ public class ReactAgentController {
      * @return 包含 AI 回复的响应对象
      * @throws RuntimeException 当 Agent 执行失败时抛出运行时异常
      */
-    @PostMapping
+    @PostMapping("/agent")
     public AgentResponse chat(@RequestBody AgentRequest request) {
         try {
             // 调用 ReactAgent 处理用户消息
             AssistantMessage response = reactAgent.call(request.message());
             // 将响应转换为字符串并返回
-            return new AgentResponse(response.toString());
+            return new AgentResponse(response.getText());
         } catch (GraphRunnerException e) {
             // 捕获图执行异常并转换为运行时异常
             throw new RuntimeException("Agent execution failed: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 与 SQL 助手 Agent 进行聊天交互的 API 端点
+     * 该 Agent 支持技能（Skills）功能，可以按需加载业务领域知识
+     *
+     * @param request 包含用户消息的请求体
+     * @return 包含 AI 回复的响应对象
+     * @throws RuntimeException 当 Agent 执行失败时抛出运行时异常
+     */
+    @PostMapping("/sql-assistant")
+    public AgentResponse sqlChat(@RequestBody AgentRequest request) {
+        try {
+            // 调用 SQL 助手 Agent 处理用户消息
+            AssistantMessage response = sqlAssistantAgent.call(request.message());
+            // 返回响应文本
+            return new AgentResponse(response.getText());
+        } catch (GraphRunnerException e) {
+            // 捕获图执行异常并转换为运行时异常
+            throw new RuntimeException("SQL Assistant execution failed: " + e.getMessage(), e);
         }
     }
 

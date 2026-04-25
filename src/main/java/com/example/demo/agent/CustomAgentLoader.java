@@ -4,6 +4,7 @@ import com.alibaba.cloud.ai.agent.studio.loader.AgentLoader;
 import com.alibaba.cloud.ai.graph.agent.Agent;
 import com.alibaba.cloud.ai.graph.agent.ReactAgent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,11 +24,25 @@ public class CustomAgentLoader implements AgentLoader {
     private static final String RESEARCH_AGENT = "research_agent";
 
     /**
+     * SQL 助手 Agent 的唯一标识名称
+     * 支持技能（Skills）功能，可以按需加载业务领域知识
+     */
+    private static final String SQL_ASSISTANT_AGENT = "sql_assistant";
+
+    /**
      * 注入的 ReactAgent 实例
      * 这是实际处理用户请求的 AI Agent，通过 Spring 依赖注入获取
      */
     @Autowired
     private ReactAgent reactAgent;
+
+    /**
+     * 注入的 SQL 助手 Agent
+     * 支持技能功能，能够根据用户查询按需加载相关领域知识
+     */
+    @Autowired
+    @Qualifier("sqlAssistantAgent")
+    private ReactAgent sqlAssistantAgent;
 
     /**
      * 列出所有可用的 Agent 名称
@@ -37,7 +52,7 @@ public class CustomAgentLoader implements AgentLoader {
      */
     @Override
     public List<String> listAgents() {
-        return List.of(RESEARCH_AGENT);
+        return List.of(RESEARCH_AGENT, SQL_ASSISTANT_AGENT);
     }
 
     /**
@@ -53,6 +68,9 @@ public class CustomAgentLoader implements AgentLoader {
     public Agent loadAgent(String name) {
         if (RESEARCH_AGENT.equals(name)) {
             return reactAgent;
+        }
+        if (SQL_ASSISTANT_AGENT.equals(name)) {
+            return sqlAssistantAgent;
         }
         throw new IllegalArgumentException("Agent not found: " + name);
     }
