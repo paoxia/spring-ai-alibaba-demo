@@ -10,7 +10,40 @@
 - **Spring AI**: 1.1.2
 - **Spring AI Alibaba**: 1.1.2.0
 - **Java**: 17
-- **构建工具**: Maven
+- **构建工具**: Maven (多模块)
+
+## 模块结构
+
+```
+spring-ai-alibaba-demo/
+├── pom.xml                      # 父POM，管理依赖版本
+├── demo-common/                  # 公共模块
+│   ├── pom.xml
+│   └── src/main/java/com/example/demo/common/
+│       └── tools/                # 工具类（计算器、时间、天气、字符串、计划等）
+├── demo-service/                 # 服务模块
+│   ├── pom.xml
+│   ├── src/main/java/com/example/demo/service/
+│   │   └── agent/                # Agent 相关业务逻辑
+│   └── src/main/resources/
+│       └── skills/               # 技能配置文件
+└── demo-starter/                 # 启动模块
+    ├── pom.xml
+    └── src/main/
+        ├── java/com/example/demo/
+        │   ├── DemoApplication.java      # 应用入口
+        │   └── controller/               # REST API 控制器
+        └── resources/
+            └── application.yml            # 配置文件
+```
+
+## 模块说明
+
+| 模块 | 依赖 | 说明 |
+|------|------|------|
+| demo-common | spring-boot-starter, spring-ai-starter-model-openai | 公共工具类，被其他模块依赖 |
+| demo-service | demo-common, spring-ai-alibaba-*, spring-ai-starter-model-openai | Agent 业务逻辑，技能配置 |
+| demo-starter | demo-service, spring-boot-starter-web | 应用入口，Controller，端口配置 |
 
 ## 核心依赖
 
@@ -19,20 +52,6 @@
 | spring-ai-alibaba-studio | 1.1.2.0 | 提供 Studio UI 界面 |
 | spring-ai-alibaba-agent-framework | 1.1.2.0 | Agent 框架核心 |
 | spring-ai-starter-model-openai | 1.1.2 | OpenAI 兼容模型支持 |
-
-## 项目结构
-
-```
-src/main/java/com/example/demo/
-├── DemoApplication.java              # 应用入口
-├── agent/
-│   ├── CustomAgentLoader.java       # Agent 加载器（提供 Agent 给 Studio）
-│   └── ReactAgentService.java       # ReactAgent 配置类
-├── controller/
-│   └── ReactAgentController.java    # REST API 控制器
-└── config/
-    └── StudioWebConfig.java         # Studio 静态资源配置
-```
 
 ## 关键配置
 
@@ -81,19 +100,33 @@ spring:
 
 ### CustomAgentLoader
 - **作用**: 实现 `AgentLoader` 接口，向 Studio UI 提供可用的 Agent 列表
-- **当前 Agent**: `research_agent`
-- **位置**: `com.example.demo.agent.CustomAgentLoader`
+- **当前 Agent**: `research_agent`, `sql_assistant`
+- **位置**: `com.example.demo.service.agent.CustomAgentLoader`
 
 ### ReactAgentService
 - **作用**: 配置并创建 ReactAgent Bean
 - **模型**: 使用 `openAiChatModel`（通过 `@Qualifier` 指定）
 - **系统指令**: "你是一个有帮助的AI助手，能够回答用户的问题并提供有用的信息。"
-- **位置**: `com.example.demo.agent.ReactAgentService`
+- **位置**: `com.example.demo.service.agent.ReactAgentService`
 
 ### ReactAgentController
 - **作用**: 提供 REST API 接口
 - **端点**: `/api/agent` (POST)
 - **位置**: `com.example.demo.controller.ReactAgentController`
+
+## 构建与运行
+
+```bash
+# 构建所有模块
+mvn clean package
+
+# 运行启动模块
+cd demo-starter
+mvn spring-boot:run
+
+# 或者直接运行 JAR
+java -jar demo-starter/target/demo-starter-1.0.0.jar
+```
 
 ## 环境变量
 
@@ -114,6 +147,7 @@ spring:
 1. **模型配置**: 当前使用火山引擎的 `glm-4.7` 模型，可根据需要修改 `application.yml` 中的 `base-url` 和 `model`
 2. **排除 DashScope**: `spring-ai-alibaba-studio` 依赖已排除 `spring-ai-alibaba-starter-dashscope`，避免冲突
 3. **端口**: 默认端口为 8081，可在 `application.yml` 中修改
+4. **多模块依赖**: `demo-service` 依赖 `demo-common`，`demo-starter` 依赖 `demo-service`
 
 ## 版本兼容说明
 

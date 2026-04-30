@@ -1,4 +1,4 @@
-package com.example.demo.tools;
+package com.example.demo.common.tools;
 
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;

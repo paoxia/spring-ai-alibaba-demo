@@ -1,11 +1,11 @@
-package com.example.demo.agent;
+package com.example.demo.service.agent;
 
 import com.alibaba.cloud.ai.graph.agent.ReactAgent;
-import com.example.demo.tools.CalculatorTools;
-import com.example.demo.tools.PlanTools;
-import com.example.demo.tools.StringUtilsTools;
-import com.example.demo.tools.TimeTools;
-import com.example.demo.tools.WeatherTools;
+import com.example.demo.common.tools.CalculatorTools;
+import com.example.demo.common.tools.PlanTools;
+import com.example.demo.common.tools.StringUtilsTools;
+import com.example.demo.common.tools.TimeTools;
+import com.example.demo.common.tools.WeatherTools;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.ToolCallbackProvider;

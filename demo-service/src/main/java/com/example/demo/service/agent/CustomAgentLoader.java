@@ -1,4 +1,4 @@
-package com.example.demo.agent;
+package com.example.demo.service.agent;
 
 import com.alibaba.cloud.ai.agent.studio.loader.AgentLoader;
 import com.alibaba.cloud.ai.graph.agent.Agent;
